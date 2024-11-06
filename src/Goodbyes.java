@@ -1,5 +1,5 @@
 public class Goodbyes {
-    private String[] allGoodbyes = {
+    private static String[] allGoodbyes = {
             "Goodbye.",
             "Take care.",
             "Farewell.",
@@ -17,7 +17,7 @@ public class Goodbyes {
             "Goodbye, and take care."
     };
 
-    public String getRandom() {
+    public static String getRandom() {
         int randomInt = (int) (Math.random() * allGoodbyes.length);
         return allGoodbyes[randomInt];
     }

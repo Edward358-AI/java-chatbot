@@ -1,5 +1,5 @@
 public class Apologies {
-    private String[] allGreetings = {
+    private static String[] allGreetings = {
             "Apologies, but I didn’t quite understand.",
             "Could you please clarify that?",
             "I’m afraid I didn’t catch that.",
@@ -17,7 +17,7 @@ public class Apologies {
             "I’m sorry, but I require more information to assist you effectively."
     };
 
-    public String getRandom() {
+    public static String getRandom() {
         int randomInt = (int) (Math.random() * allGreetings.length);
         return allGreetings[randomInt];
     }

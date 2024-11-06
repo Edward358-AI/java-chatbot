@@ -19,4 +19,14 @@ public class Orders {
     public void deleteOrder(int orderNumber) {
         orders.remove(orderNumber);
     }
+
+    public String toString() {
+        String string = "";
+        
+        for (int i = 0; i < orders.size(); i++) {
+            string += orders.get(i).toString() + " ";
+        }
+
+        return string;
+    }
 }

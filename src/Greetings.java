@@ -1,5 +1,5 @@
 public class Greetings {
-    private String[] allGreetings = {
+    private static String[] allGreetings = {
             "Hello.",
             "Good day.",
             "Greetings.",
@@ -17,7 +17,7 @@ public class Greetings {
             "Hello, how may I help?"
     };
 
-    public String getRandom() {
+    public static String getRandom() {
         int randomInt = (int) (Math.random() * allGreetings.length);
         return allGreetings[randomInt];
     }
