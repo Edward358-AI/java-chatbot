@@ -18,7 +18,7 @@ public class Apologies {
     };
 
     public static String getRandom() {
-        int randomInt = (int) (Math.random() * allGreetings.length);
+        int randomInt = Utils.randint(0, allGreetings.length);
         return allGreetings[randomInt];
     }
 }

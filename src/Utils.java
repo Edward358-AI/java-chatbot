@@ -10,7 +10,7 @@ public class Utils {
     }
 
     public static int randint(int min, int max) {
-        return (int) Math.random() * (max - min) + min;
+        return (int) (Math.random() * (max - min + 1)) + min;
     }
 
     public static boolean checkKeyword(String[] keywords, String input) {
