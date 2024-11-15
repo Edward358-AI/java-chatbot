@@ -18,9 +18,10 @@ public class Order {
     public String toString() {
         String string = "";
 
-        string += "order #" + String.valueOf(orderNumber) + ": ";
+        string += "Order #" + String.valueOf(orderNumber) + ": \n";
         for (int i = 0; i < items.length; i++) {
-            string += "item #" + String.valueOf(i) + ": " + items[i];
+            string += "Item #" + String.valueOf(i) + ": " + items[i];
+            string += (i == items.length - 1) ? "" : ", ";
         }
         
         return string;
