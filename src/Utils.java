@@ -12,4 +12,14 @@ public class Utils {
     public static int randint(int min, int max) {
         return (int) Math.random() * (max - min) + min;
     }
+
+    public static boolean checkKeyword(String[] keywords, String input) {
+        for (String keyword : keywords) {
+            if (input.contains(keyword)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
