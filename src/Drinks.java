@@ -1,14 +1,30 @@
 public class Drinks {
-    public static final String ITEM1 = "Coca-Cola";
-    public static final String ITEM2 = "Diet Coke";
-    public static final String ITEM3 = "Cherry Coke";
-    public static final String ITEM4 = "7UP";
-    public static final String ITEM5 = "Dr. Pepper";
-    public static final String ITEM6 = "Root Beer";
-    public static final String ITEM7 = "Signature Pink Lemonade";
-    public static final String ITEM8 = "Lite Pink Lemonade";
-    public static final String ITEM9 = "Iced Tea";
-    public static final String ITEM10 = "Milk";
-    public static final String ITEM11 = "Coffee";
-    public static final String ITEM12 = "Hot Cocoa";
+    public static final String[] ITEMS = {
+        "Coca-Cola",
+        "Diet Coke", 
+        "Cherry Coke", 
+        "7UP", 
+        "Dr. Pepper", 
+        "Root Beer", 
+        "Signature Pink Lemonade", 
+        "Lite Pink Lemonade", 
+        "Iced Tea", 
+        "Milk", 
+        "Coffee", 
+        "Hot Cocoa"
+    };
+    public static final double[] PRICES = {
+        2.19, 
+        2.19, 
+        2.19, 
+        2.19, 
+        2.19, 
+        2.19, 
+        2.19, 
+        2.19, 
+        2.19, 
+        1.39, 
+        1.79, 
+        2.49
+    };
 }

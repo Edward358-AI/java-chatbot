@@ -1,5 +1,12 @@
 public class Shakes {
-    public static final String ITEM1 = "Chocolate";
-    public static final String ITEM2 = "Strawberry";
-    public static final String ITEM3 = "Vanilla";
+    public static final String[] ITEMS = {
+        "Chocolate",
+        "Strawberry",
+        "Vanilla"
+    };
+    public static final double[] PRICES = {
+        3.59,
+        3.59,
+        3.59
+    };
 }

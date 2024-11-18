@@ -1,6 +1,14 @@
 public class Food {
-    public static final String ITEM1 = "Double Double";
-    public static final String ITEM2 = "Cheeseburger";
-    public static final String ITEM3 = "Hamburger";
-    public static final String ITEM4 = "French Fries";
+    public static final String[] ITEMS = {
+        "Double Double", 
+        "Cheeseburger", 
+        "Hamburger", 
+        "French Fries"
+    };
+    public static final double[] PRICES = {
+        5.89, 
+        4.19, 
+        3.69, 
+        2.79
+        };
 }

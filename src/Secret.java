@@ -1,8 +1,18 @@
-public class SecretMenu {
-    public static final String ITEM1 = "4X4";
-    public static final String ITEM2 = "3X3";
-    public static final String ITEM3 = "Double Meat";
-    public static final String ITEM4 = "Grilled Cheese";
-    public static final String ITEM5 = "Protein Style";
-    public static final String ITEM6 = "Animal Style";
+public class Secret {
+    public static final String[] ITEMS = {
+        "4X4",
+        "3X3",
+        "Double Meat", 
+        "Grilled Cheese", 
+        "Protein Style", 
+        "Animal Style"
+    };
+    public static final double[] PRICES = {
+        10.99,
+        8.49,
+        5.19,
+        3.19,
+        3.50,
+        3.72
+    };
 }

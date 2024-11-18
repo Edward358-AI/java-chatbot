@@ -3,7 +3,7 @@ import java.util.*;
 public class Orders {
     private ArrayList<Order> orders = new ArrayList<Order>();
     
-    public Object[] viewOrder(int orderNumber) {
+    public String viewOrder(int orderNumber) {
         for (Order order : orders) {
             if (order.getNumber() == orderNumber) {
                 return order.toString();
@@ -26,7 +26,7 @@ public class Orders {
 
     public void deleteOrder(int orderNumber) {
         for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getNumber() == orderNum) {
+            if (orders.get(i).getNumber() == orderNumber) {
                 orders.remove(i);
                 break;
             }
