@@ -19,6 +19,7 @@ public class Goodbyes {
 
     public static String getRandom() {
         int randomInt = Utils.randint(0, allGoodbyes.length);
+        
         return allGoodbyes[randomInt];
     }
 }
