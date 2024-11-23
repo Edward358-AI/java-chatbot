@@ -19,6 +19,7 @@ public class Greetings {
 
     public static String getRandom() {
         int randomInt = Utils.randint(0, allGreetings.length);
+        
         return allGreetings[randomInt];
     }
 }
