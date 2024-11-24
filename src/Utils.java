@@ -13,17 +13,5 @@ public class Utils {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
-    public static int genOrderNum() {
-        return randint(1, 100);
-    }
-
-    public static boolean checkKeyword(String[] keywords, String input) {
-        for (String keyword : keywords) {
-            if (input.contains(keyword)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
+    
 }
