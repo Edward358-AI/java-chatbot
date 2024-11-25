@@ -47,13 +47,29 @@ public class Chatbot {
     private String state = "welcome";
 
     private boolean keyword(String input, String[] keywords) {
-        for (String keyword : keywords) {
-            if (input.contains(keyword)) {
-                return true;
+        return keyword(input, keywords, false);
+    }
+
+    private boolean keyword(String input, String[] keywords, boolean checkAll) {
+        boolean contained = false;
+        if (checkAll) {
+            contained = true;
+            for (String keyword : keywords) {
+                if (!input.contains(keyword)) {
+                    contained = false;
+                    break;
+                }
+            }
+        } else {
+            for (String keyword : keywords) {
+                if (input.contains(keyword)) {
+                    contained = true;
+                    break;
+                }
             }
         }
 
-        return false;
+        return contained;
     }
 
     private void readYesNo(String yesState, String noState, String customErrMsg) {
@@ -77,6 +93,41 @@ public class Chatbot {
         parseState();
     }
 
+    private void askQuestion() {
+        System.out.println("");
+        String[] location = {"location"};
+        String[] nutrition = {"nutrition"};
+        String[] contact = {"contact"};
+        String[] vieworder1 = {"see", "view", "check", "look", "access", "review", "pull up", "track", "visit"};
+        String[] vieworder2 = {"order"};
+        String tempState = null;
+        do {
+            String resp = sc.nextLine().toLowerCase();
+            boolean choseLocation = keyword(resp, location);
+            boolean choseNutrition = keyword(resp, nutrition);
+            boolean choseContact = keyword(resp, contact);
+            boolean choseOrder = keyword(resp, vieworder1) && keyword(resp, vieworder2);
+            if (keyword(resp, QUIT)) {
+                tempState = "goodbye";
+            } else {
+                if (choseLocation && !choseNutrition && !choseOrder && !choseContact) {
+                    tempState = "location";
+                } else if (!choseLocation && choseNutrition && !choseOrder && !choseContact) {
+                    tempState = "nutrition";
+                } else if (!choseLocation && !choseNutrition && choseOrder && !choseContact) {
+                    tempState = "viewOrders";
+                } else if (!choseLocation && !choseNutrition && !choseOrder && choseContact) {
+                    tempState = "contact";
+                } else {
+                    System.out.println(Apologies.getRandom(), "");
+                    tempState = null;
+                }
+            }
+        } while (tempState == null);
+        state = tempState;
+        parseState();
+    }
+
     public void initialize() {
         parseState();
     }
@@ -86,17 +137,19 @@ public class Chatbot {
             case "welcome":
                 welcome();
             case "goodbye":
-            goodbye();
+                goodbye();
+            case "takeOrder":
+                takeOrder();
             case "askQuestion":
-            askQuestion();
+                askQuestion();
             case "location":
-            location();
+                location();
             case "nutrition":
-            nutrition();
+                nutrition();
             case "viewOrders":
-            viewOrders();
+                viewOrders();
             case "contactInfo":
-            contactInfo();
+                contactInfo();
         }
     }
 
@@ -106,26 +159,30 @@ public class Chatbot {
                 Greetings.getRandom()));
         readYesNo("takeOrder", "askQuestion", Apologies.getRandom() + " Can I take your order today?");
     }
+
     private void goodbye() {
-        System.out.println(String.format("%s As the In n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!"));
+        System.out.println(String.format(
+                "%s As the In n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!"));
     }
+
     private void takeOrder() {
 
     }
-    private void askQuestion() {
 
-    }
     private void location() {
 
     }
+
     private void nutrition() {
 
     }
+
     private void viewOrders() {
 
     }
-    private void contactInfo() {
 
+    private void contactInfo() {
+        System.out.println("If you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\nNow that's out of the way, would you like me to take your order now, or no?");
     }
 
 }
