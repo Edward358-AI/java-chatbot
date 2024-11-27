@@ -94,7 +94,7 @@ public class Chatbot {
     }
 
     private void askQuestion() {
-        System.out.println("");
+        System.out.println("Do you have any questions regarding location, nutrition, or contact info, or ");
         String[] location = {"location"};
         String[] nutrition = {"nutrition"};
         String[] contact = {"contact"};
@@ -119,7 +119,7 @@ public class Chatbot {
                 } else if (!choseLocation && !choseNutrition && !choseOrder && choseContact) {
                     tempState = "contact";
                 } else {
-                    System.out.println(Apologies.getRandom(), "");
+                    System.out.println(Apologies.getRandom() + "Would you like information");
                     tempState = null;
                 }
             }
@@ -183,6 +183,7 @@ public class Chatbot {
 
     private void contactInfo() {
         System.out.println("If you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\nNow that's out of the way, would you like me to take your order now, or no?");
+        readYesNo("takeOrder", "askQuestion", "");
     }
 
 }
