@@ -16,33 +16,33 @@ public class Chatbot {
     private Scanner sc = new Scanner(System.in);
     private final String[] QUIT = { "quit", "q" };
     private final String[] YES = """
-                    Yes
-                    Yeah
-                    Yea
-                    Yup
-                    Sure
-                    Okay
-                    Alright
-                    Definitely
-                    Absolutely
-                    Fine
-                    Of course
-                    Why not
+Yes
+Yeah
+Yea
+Yup
+Sure
+Okay
+Alright
+Definitely
+Absolutely
+Fine
+Of course
+Why not
             """.toLowerCase().split("\n");
     private final String[] NO = """
-                No
-                Nope
-                Nah
-                Never
-                Not really
-                No way
-                Negative
-                Not at all
-                I'm good
-                I'm okay
-                Not today
-                Not right now
-                No thanks
+No
+Nope
+Nah
+Never
+Not really
+No way
+Negative
+Not at all
+I'm good
+I'm okay
+Not today
+Not right now
+No thanks
             """.toLowerCase().split("\n");
     private String state = "welcome";
 
@@ -94,7 +94,7 @@ public class Chatbot {
     }
 
     private void askQuestion() {
-        System.out.println("Do you have any questions regarding location, nutrition, or contact info, or ");
+        System.out.println("Do you have any questions regarding location, nutrition, or contact info, or would you like to view the orders?");
         String[] location = {"location"};
         String[] nutrition = {"nutrition"};
         String[] contact = {"contact"};
@@ -119,7 +119,7 @@ public class Chatbot {
                 } else if (!choseLocation && !choseNutrition && !choseOrder && choseContact) {
                     tempState = "contact";
                 } else {
-                    System.out.println(Apologies.getRandom() + "Would you like information");
+                    System.out.println(Apologies.getRandom() + " Would you like information regarding location, nutrition, or contact info? Or would you like to view the order queue?");
                     tempState = null;
                 }
             }
@@ -129,27 +129,41 @@ public class Chatbot {
     }
 
     public void initialize() {
+        for (String s : NO) {
+            System.out.println(s);
+        }
         parseState();
     }
 
     private void parseState() {
+        System.out.println(state);
         switch (state) {
             case "welcome":
                 welcome();
+                break;
             case "goodbye":
                 goodbye();
+                break;
             case "takeOrder":
                 takeOrder();
+                break;
             case "askQuestion":
                 askQuestion();
+                break;
             case "location":
                 location();
+                break;
             case "nutrition":
                 nutrition();
+                break;
             case "viewOrders":
                 viewOrders();
+                break;
             case "contactInfo":
                 contactInfo();
+                break;
+            default:
+                break;
         }
     }
 
@@ -162,11 +176,33 @@ public class Chatbot {
 
     private void goodbye() {
         System.out.println(String.format(
-                "%s As the In n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!"));
+                "%s As the In n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!", Goodbyes.getRandom()));
     }
 
     private void takeOrder() {
-
+        ArrayList<String> orderItems = new ArrayList<String>();
+        ArrayList<Double> orderPrice = new ArrayList<Double>();
+        boolean finished = false;
+        System.out.println("Here is our menu:\n");
+        Menu.printMenu();
+        System.out.println();
+        do {
+            System.out.println("Please type out the name of an item you would like to add to your order. If you are finished type \"finished\".");
+            String cItem = sc.nextLine().toLowerCase().trim();
+            if (keyword(cItem, new String[]{"finished", "finish", "done", "end"})) {
+                if (orderItems.size() == 0) {
+                    System.out.print("You must enter at least one item. ");
+                    continue;
+                } else {
+                    finished = true;
+                }
+            } else {
+                if (Menu.getInfo(cItem) != null) {
+                    orderItems.add(cItem.substring(0,1).toUpperCase()+cItem.substring(1));
+                    
+                }
+            }
+        } while (!finished);
     }
 
     private void location() {
@@ -183,7 +219,7 @@ public class Chatbot {
 
     private void contactInfo() {
         System.out.println("If you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\nNow that's out of the way, would you like me to take your order now, or no?");
-        readYesNo("takeOrder", "askQuestion", "");
+        readYesNo("takeOrder", "askQuestion", Apologies.getRandom() + " Do you want me to take your order?");
     }
 
 }
@@ -318,7 +354,7 @@ class Greetings {
     };
 
     static String getRandom() {
-        int randomInt = Utils.randint(0, allGreetings.length);
+        int randomInt = Utils.randint(0, allGreetings.length-1);
 
         return allGreetings[randomInt];
     }
@@ -344,9 +380,66 @@ class Goodbyes {
     };
 
     static String getRandom() {
-        int randomInt = Utils.randint(0, allGoodbyes.length);
+        int randomInt = Utils.randint(0, allGoodbyes.length-1);
 
         return allGoodbyes[randomInt];
+    }
+}
+
+class Menu {
+    static String[] ITEMS = new String[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + Secret.ITEMS.length];
+    static double[] PRICES = new double[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + Secret.ITEMS.length];
+    static double[] CALORIES = new double[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + Secret.ITEMS.length];
+    static {
+        for (int i = 0; i<Food.ITEMS.length;i++) {
+            ITEMS[i] = Food.ITEMS[i];
+            PRICES[i] = Food.PRICES[i];
+            CALORIES[i] = Food.CALORIES[i];
+        }
+        System.out.println("\nDrinks");
+        for (int i = 0; i<Drinks.ITEMS.length;i++) {
+            ITEMS[Food.ITEMS.length + i] = Drinks.ITEMS[i];
+            PRICES[Food.ITEMS.length + i] = Drinks.PRICES[i];
+            CALORIES[Food.ITEMS.length + i] = Drinks.CALORIES[i];
+        }
+        System.out.println("\nShakes");
+        for (int i = 0; i<Shakes.ITEMS.length;i++) {
+            ITEMS[Food.ITEMS.length + Drinks.ITEMS.length + i] = Shakes.ITEMS[i];
+            PRICES[Food.ITEMS.length + Drinks.ITEMS.length + i] = PRICES.ITEMS[i];
+            CALORIES[Food.ITEMS.length + Drinks.ITEMS.length + i] = CALORIES.ITEMS[i];
+        }
+        System.out.println("\n(Not so) Secret Menu:");
+        for (int i = 0; i<Secret.ITEMS.length;i++) {
+            ITEMS[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + i] = Secret.ITEMS[i];
+            PRICES[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + i] = Secret.PRICES[i];
+            CALORIES[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + i] = Secret.CALORIES[i];
+        }
+    }
+    static double[] getInfo(String food) {
+        for (int i = 0; i < ITEMS.length; i++) {
+            if (ITEMS[i].toLowerCase().equals(food.toLowerCase())) {
+                return new double[] { PRICES[i], CALORIES[i] };
+            }
+        }
+        return null;
+    }
+    static void printMenu() {
+        System.out.println("Food items:");
+        for (int i = 0; i<Food.ITEMS.length;i++) {
+            System.out.println(Food.ITEMS[i] + ": $" + Food.PRICES[i]);
+        }
+        System.out.println("\nDrinks");
+        for (int i = 0; i<Drinks.ITEMS.length;i++) {
+            System.out.println(Drinks.ITEMS[i] + ": $" + Drinks.PRICES[i]);
+        }
+        System.out.println("\nShakes");
+        for (int i = 0; i<Shakes.ITEMS.length;i++) {
+            System.out.println(Shakes.ITEMS[i] + ": $" + Shakes.PRICES[i]);
+        }
+        System.out.println("\n(Not so) Secret Menu:");
+        for (int i = 0; i<Secret.ITEMS.length;i++) {
+            System.out.println(Secret.ITEMS[i] + ": $" + Secret.PRICES[i]);
+        }
     }
 }
 
@@ -481,7 +574,7 @@ class Apologies {
     };
 
     static String getRandom() {
-        int randomInt = Utils.randint(0, allGreetings.length);
+        int randomInt = Utils.randint(0, allGreetings.length-1);
 
         return allGreetings[randomInt];
     }
