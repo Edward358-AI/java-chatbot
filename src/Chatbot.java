@@ -84,7 +84,7 @@ No thanks
                 } else if (!keyword(resp, YES) && keyword(resp, NO)) {
                     tempState = noState;
                 } else {
-                    System.out.println(customErrMsg);
+                    System.out.println(Apologies.getRandom() + customErrMsg);
                     tempState = null;
                 }
             }
@@ -117,7 +117,7 @@ No thanks
                 } else if (!choseLocation && !choseNutrition && choseOrder && !choseContact) {
                     tempState = "viewOrders";
                 } else if (!choseLocation && !choseNutrition && !choseOrder && choseContact) {
-                    tempState = "contact";
+                    tempState = "contactInfo";
                 } else {
                     System.out.println(Apologies.getRandom() + " Would you like information regarding location, nutrition, or contact info? Or would you like to view the order queue?");
                     tempState = null;
@@ -129,14 +129,10 @@ No thanks
     }
 
     public void initialize() {
-        for (String s : NO) {
-            System.out.println(s);
-        }
         parseState();
     }
 
     private void parseState() {
-        System.out.println(state);
         switch (state) {
             case "welcome":
                 welcome();
@@ -171,7 +167,7 @@ No thanks
         System.out.println(String.format(
                 "%s I am In 'n Out's virtual assistant. If at any time you would like to stop chatting, just say \"quit\" or \"q\" anytime. Can I take your order today?",
                 Greetings.getRandom()));
-        readYesNo("takeOrder", "askQuestion", Apologies.getRandom() + " Can I take your order today?");
+        readYesNo("takeOrder", "askQuestion", " Can I take your order today?");
     }
 
     private void goodbye() {
@@ -181,7 +177,8 @@ No thanks
 
     private void takeOrder() {
         ArrayList<String> orderItems = new ArrayList<String>();
-        ArrayList<Double> orderPrice = new ArrayList<Double>();
+        ArrayList<Double> orderPrices = new ArrayList<Double>();
+        
         boolean finished = false;
         System.out.println("Here is our menu:\n");
         Menu.printMenu();
@@ -199,22 +196,34 @@ No thanks
             } else {
                 if (Menu.getInfo(cItem) != null) {
                     orderItems.add(cItem.substring(0,1).toUpperCase()+cItem.substring(1));
-                    
+                    orderPrices.add(Menu.getInfo(cItem)[0]);
+                    System.out.println(cItem.substring(0,1).toUpperCase()+cItem.substring(1) + " added to your order.");
+                } else {
+                    System.out.println("Food item not found. Please check your spelling and try again. Thanks!");
+                    continue;
                 }
             }
         } while (!finished);
+        System.out.println("Here are your order details: \n");
+        for (int i = 0; i < orderItems.size(); i++) {
+            System.out.println(orderItems.get(i) + ": $" + orderPrices.get(0));
+        }
+        System.out.println("Order total: $" + Utils.sum(orderPrices.toArray(new Double[0])) + "\nYour order will be ready shortly! Thank you for choosing In 'n Out today!");
     }
 
     private void location() {
-
+        // TEST
+        System.out.println("successfully ran location()");
     }
 
     private void nutrition() {
-
+        // TEST
+        System.out.println("successfully ran nutrition()");
     }
 
     private void viewOrders() {
-
+        // TEST
+        System.out.println("successfully ran viewOrders()");
     }
 
     private void contactInfo() {
@@ -321,6 +330,7 @@ class Secret {
             970.0,
             790.0,
             470.0,
+            380.0,
             750.0
     };
 
@@ -396,19 +406,16 @@ class Menu {
             PRICES[i] = Food.PRICES[i];
             CALORIES[i] = Food.CALORIES[i];
         }
-        System.out.println("\nDrinks");
         for (int i = 0; i<Drinks.ITEMS.length;i++) {
             ITEMS[Food.ITEMS.length + i] = Drinks.ITEMS[i];
             PRICES[Food.ITEMS.length + i] = Drinks.PRICES[i];
             CALORIES[Food.ITEMS.length + i] = Drinks.CALORIES[i];
         }
-        System.out.println("\nShakes");
         for (int i = 0; i<Shakes.ITEMS.length;i++) {
             ITEMS[Food.ITEMS.length + Drinks.ITEMS.length + i] = Shakes.ITEMS[i];
-            PRICES[Food.ITEMS.length + Drinks.ITEMS.length + i] = PRICES.ITEMS[i];
-            CALORIES[Food.ITEMS.length + Drinks.ITEMS.length + i] = CALORIES.ITEMS[i];
+            PRICES[Food.ITEMS.length + Drinks.ITEMS.length + i] = Shakes.PRICES[i];
+            CALORIES[Food.ITEMS.length + Drinks.ITEMS.length + i] = Shakes.CALORIES[i];
         }
-        System.out.println("\n(Not so) Secret Menu:");
         for (int i = 0; i<Secret.ITEMS.length;i++) {
             ITEMS[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + i] = Secret.ITEMS[i];
             PRICES[Food.ITEMS.length + Drinks.ITEMS.length + Shakes.ITEMS.length + i] = Secret.PRICES[i];
@@ -428,11 +435,11 @@ class Menu {
         for (int i = 0; i<Food.ITEMS.length;i++) {
             System.out.println(Food.ITEMS[i] + ": $" + Food.PRICES[i]);
         }
-        System.out.println("\nDrinks");
+        System.out.println("\nDrinks:");
         for (int i = 0; i<Drinks.ITEMS.length;i++) {
             System.out.println(Drinks.ITEMS[i] + ": $" + Drinks.PRICES[i]);
         }
-        System.out.println("\nShakes");
+        System.out.println("\nShakes:");
         for (int i = 0; i<Shakes.ITEMS.length;i++) {
             System.out.println(Shakes.ITEMS[i] + ": $" + Shakes.PRICES[i]);
         }
