@@ -19,7 +19,19 @@ public class Utils {
         return r;
     }
 
+    public static int sum(Integer[] s) {
+        int r = 0;
+        for (int i : s) r += i;
+        return r;
+    }
+
     public static double sum(Double[] s) {
+        double r = 0.0;
+        for (double i : s) r += i;
+        return Math.round(r * 100.0) / 100.0;
+    }
+
+    public static double sum(double[] s) {
         double r = 0.0;
         for (double i : s) r += i;
         return Math.round(r * 100.0) / 100.0;

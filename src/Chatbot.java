@@ -94,7 +94,7 @@ No thanks
     }
 
     private void askQuestion() {
-        System.out.println("Do you have any questions regarding location, nutrition, or contact info, or would you like to view the orders?");
+        System.out.println("Do you have any questions regarding location, nutrition, or contact info, or would you like to view the orders? Please choose one.");
         String[] location = {"location"};
         String[] nutrition = {"nutrition"};
         String[] contact = {"contact"};
@@ -186,7 +186,7 @@ No thanks
         do {
             System.out.println("Please type out the name of an item you would like to add to your order. If you are finished type \"finished\".");
             String cItem = sc.nextLine().toLowerCase().trim();
-            if (keyword(cItem, new String[]{"finished", "finish", "done", "end"})) {
+            if (keyword(cItem, new String[]{"finished", "finish", "done", "end", "ready"})) {
                 if (orderItems.size() == 0) {
                     System.out.print("You must enter at least one item. ");
                     continue;
@@ -204,11 +204,15 @@ No thanks
                 }
             }
         } while (!finished);
+        int orderNum = orders.saveOrder(orderItems.toArray(new String[0]));
         System.out.println("Here are your order details: \n");
         for (int i = 0; i < orderItems.size(); i++) {
             System.out.println(orderItems.get(i) + ": $" + orderPrices.get(0));
         }
-        System.out.println("Order total: $" + Utils.sum(orderPrices.toArray(new Double[0])) + "\nYour order will be ready shortly! Thank you for choosing In 'n Out today!");
+        System.out.println("Order total: $" + Utils.sum(orderPrices.toArray(new Double[0])) + "\nYour order number is " + orderNum + ". It will be ready shortly!");
+        state = "askQuestion";
+        System.out.print("While you're waiting, ");
+        parseState();
     }
 
     private void location() {
@@ -236,16 +240,16 @@ No thanks
 class Orders {
     private ArrayList<Order> orders = new ArrayList<Order>();
 
-    String viewOrder(int orderNumber) {
+    String[] viewOrder(int orderNumber) {
         for (Order order : orders) {
             if (order.getNumber() == orderNumber) {
-                return order.toString();
+                return order.getItems();
             }
         }
         return null;
     }
 
-    void saveOrder(String[] items) {
+    int saveOrder(String[] items) {
         int orderNum = genOrderNum();
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getNumber() == orderNum) {
@@ -253,8 +257,8 @@ class Orders {
                 i = 0;
             }
         }
-
         orders.add(new Order(orderNum, items));
+        return orderNum;
     }
 
     void deleteOrder(int orderNumber) {
