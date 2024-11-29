@@ -36,4 +36,19 @@ public class Utils {
         for (double i : s) r += i;
         return Math.round(r * 100.0) / 100.0;
     }
+
+    public static String capitalize(String s) {
+        return s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+
+    public static boolean strIsInt(String s) {
+        try { 
+            Integer.parseInt(s); 
+        } catch (NumberFormatException e) { 
+            return false; 
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
 }

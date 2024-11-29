@@ -10,6 +10,7 @@ public class Chatbot {
     // "location",
     // "nutrition",
     // "viewOrders",
+    // "updateOrder",
     // "contactInfo"
     // };
     private Orders orders = new Orders();
@@ -72,6 +73,13 @@ No thanks
         return contained;
     }
 
+    private void checkQuit(String input) {
+        if (keyword(input, QUIT)) {
+            state = "goodbye";
+            parseState();
+        }
+    }
+
     private void readYesNo(String yesState, String noState, String customErrMsg) {
         String tempState = null;
         do {
@@ -107,17 +115,20 @@ No thanks
             boolean choseNutrition = keyword(resp, nutrition);
             boolean choseContact = keyword(resp, contact);
             boolean choseOrder = keyword(resp, vieworder1) && keyword(resp, vieworder2);
+            boolean saidNo = keyword(resp, NO);
             if (keyword(resp, QUIT)) {
                 tempState = "goodbye";
             } else {
-                if (choseLocation && !choseNutrition && !choseOrder && !choseContact) {
+                if (choseLocation && !choseNutrition && !choseOrder && !choseContact && !saidNo) {
                     tempState = "location";
-                } else if (!choseLocation && choseNutrition && !choseOrder && !choseContact) {
+                } else if (!choseLocation && choseNutrition && !choseOrder && !choseContact && !saidNo) {
                     tempState = "nutrition";
-                } else if (!choseLocation && !choseNutrition && choseOrder && !choseContact) {
+                } else if (!choseLocation && !choseNutrition && choseOrder && !choseContact && !saidNo) {
                     tempState = "viewOrders";
-                } else if (!choseLocation && !choseNutrition && !choseOrder && choseContact) {
+                } else if (!choseLocation && !choseNutrition && !choseOrder && choseContact && !saidNo) {
                     tempState = "contactInfo";
+                }  else if (!choseLocation && !choseNutrition && !choseOrder && !choseContact && saidNo) {
+                    tempState = "welcome";
                 } else {
                     System.out.println(Apologies.getRandom() + " Would you like information regarding location, nutrition, or contact info? Or would you like to view the order queue?");
                     tempState = null;
@@ -139,6 +150,7 @@ No thanks
                 break;
             case "goodbye":
                 goodbye();
+                System.exit(0);
                 break;
             case "takeOrder":
                 takeOrder();
@@ -154,6 +166,9 @@ No thanks
                 break;
             case "viewOrders":
                 viewOrders();
+                break;
+            case "updateOrder":
+                updateOrder();
                 break;
             case "contactInfo":
                 contactInfo();
@@ -186,6 +201,7 @@ No thanks
         do {
             System.out.println("Please type out the name of an item you would like to add to your order. If you are finished type \"finished\".");
             String cItem = sc.nextLine().toLowerCase().trim();
+            checkQuit(cItem);
             if (keyword(cItem, new String[]{"finished", "finish", "done", "end", "ready"})) {
                 if (orderItems.size() == 0) {
                     System.out.print("You must enter at least one item. ");
@@ -195,44 +211,166 @@ No thanks
                 }
             } else {
                 if (Menu.getInfo(cItem) != null) {
-                    orderItems.add(cItem.substring(0,1).toUpperCase()+cItem.substring(1));
+                    orderItems.add(Utils.capitalize(cItem));
                     orderPrices.add(Menu.getInfo(cItem)[0]);
-                    System.out.println(cItem.substring(0,1).toUpperCase()+cItem.substring(1) + " added to your order.");
+                    System.out.println(Utils.capitalize(cItem) + " added to your order.");
                 } else {
                     System.out.println("Food item not found. Please check your spelling and try again. Thanks!");
                     continue;
                 }
             }
         } while (!finished);
-        int orderNum = orders.saveOrder(orderItems.toArray(new String[0]));
+        viewOrder order = orders.saveOrder(orderItems, orderPrices);
         System.out.println("Here are your order details: \n");
-        for (int i = 0; i < orderItems.size(); i++) {
-            System.out.println(orderItems.get(i) + ": $" + orderPrices.get(0));
-        }
-        System.out.println("Order total: $" + Utils.sum(orderPrices.toArray(new Double[0])) + "\nYour order number is " + orderNum + ". It will be ready shortly!");
+        System.out.println(order.asText());
         state = "askQuestion";
         System.out.print("While you're waiting, ");
         parseState();
     }
 
     private void location() {
-        // TEST
-        System.out.println("successfully ran location()");
+        boolean locFound = false;
+        do {
+            System.out.println("Regarding location, what state would you like to get information about? You can enter either the name or postal code (the two letter abbreviation).");
+            String state = sc.nextLine().toLowerCase().trim();
+            checkQuit(state);
+            System.out.println("What city in that state would you like location information regarding?");
+            String city = sc.nextLine().toLowerCase().trim();
+            checkQuit(city);
+            String[][] locations;
+            if (state.length() == 2) {
+                locations = Locations.getLocationsByPostal(city, state);
+            } else {
+                locations = Locations.getLocationsByState(city, state);
+            }
+            if (locations != null) {
+                System.out.println("Here are the locations in the area that you specified.");
+                for (String[] location : locations) {
+                    System.out.println(location[2] + ", " + location[1] + ", " + location[3]);
+                }
+                locFound = true;
+            } else {
+                System.out.print(Apologies.getRandom()+" There were no locations found/the city and state were invalid. ");
+            }
+        } while (!locFound);
+        System.out.println("Hopefully you found what you were looking for. Do you want me to take your order now?");
+        readYesNo("takeOrder", "askQuestion", " Do you want me to take your order?");
     }
 
     private void nutrition() {
-        // TEST
-        System.out.println("successfully ran nutrition()");
+        boolean nutrFound = false;
+        do {
+            System.out.println("Regarding nutrition, what food item would you like to get information about? Type \"menu\" to see our menu.");
+            String food = sc.nextLine().toLowerCase().trim();
+            checkQuit(food);
+            if (keyword(food, new String[]{"menu"})) {
+                Menu.printMenu();
+                continue;
+            }
+            double[] nutrInfo = Menu.getInfo(food);
+            if (nutrInfo != null) {
+                System.out.println(Utils.capitalize(food) + " has " + (int) nutrInfo[1] + " calories.");
+                nutrFound = true;
+            } else {
+                System.out.print(Apologies.getRandom() + " ");
+            }
+        } while (!nutrFound);
+        System.out.println("Hopefully you found what you were looking for. Do you want me to take your order now?");
+        readYesNo("takeOrder", "askQuestion", " Do you want me to take your order?");
     }
 
     private void viewOrders() {
-        // TEST
-        System.out.println("successfully ran viewOrders()");
+        System.out.println("Here is the list of current orders:\n\n" + orders.asText());
+        System.out.println("Would you like to update any of these orders?");
+        readYesNo("updateOrder", "askQuestion", " Would you like to update an order?");
+    }
+
+    private void updateOrder() {
+        ArrayList<String> added = new ArrayList<String>();
+        ArrayList<String> removed = new ArrayList<String>();
+        int orderNum = 0;
+        do {
+            System.out.println("Please input the order number of the order you would like to update.");
+            String s = sc.nextLine().trim();
+            checkQuit(s);
+            if (Utils.strIsInt(s) && orders.viewOrder(Integer.parseInt(s)) != null) {
+                orderNum = Integer.parseInt(s);
+            }
+        } while (orderNum == 0);
+        
+        boolean finished = false;
+        do {
+            System.out.println("Please enter an item in you order you would like to remove. Type \"menu\" anytime to view the menu. When finished, type \"finished\"");
+            String food = sc.nextLine().toLowerCase().trim();
+            checkQuit(food);
+            if (keyword(food, new String[]{"menu"})) {
+                Menu.printMenu();
+                continue;
+            }
+            if (keyword(food, new String[]{"finished", "finish", "done", "end", "ready"})) {
+                if (removed.size() == 0) {
+                    System.out.print("No items were removed from order.");
+                    finished = true;
+                } else {
+                    finished = true;
+                }
+            } else {
+                if (Menu.getInfo(food) != null && Arrays.asList(orders.viewOrder(orderNum).getItems()).contains(Utils.capitalize(food))) {
+                    food = Utils.capitalize(food);
+                    orders.removeItem(orderNum, food);
+                    removed.add(food);
+                    System.out.println(food + " was removed from order #" + orderNum + ".");
+                    continue;
+                } else {
+                    System.out.println("Food item not found/not in order. Please check your spelling and try again. Thanks!");
+                    continue;
+                }
+            }
+        } while (!finished);
+
+        System.out.println();
+        finished = false;
+        
+        do {
+            System.out.println("Please enter an item in you order you would like to add. Type \"menu\" anytime to view the menu. When finished, type \"finished\"");
+            String food = sc.nextLine().toLowerCase().trim();
+            checkQuit(food);
+            if (keyword(food, new String[]{"menu"})) {
+                Menu.printMenu();
+                continue;
+            }
+            if (keyword(food, new String[]{"finished", "finish", "done", "end", "ready"})) {
+                if (added.size() == 0) {
+                    System.out.print("No items were added to order.");
+                    finished = true;
+                } else {
+                    finished = true;
+                }
+            } else {
+                if (Menu.getInfo(food) != null) {
+                    food = Utils.capitalize(food);
+                    orders.addItem(orderNum, food);
+                    added.add(food);
+                    System.out.println(food + " was added to order #" + orderNum + ".");
+                    continue;
+                } else {
+                    System.out.println("Food item not found. Please check your spelling and try again. Thanks!");
+                    continue;
+                }
+            }
+        } while (!finished);
+        viewOrder order = orders.viewOrder(orderNum);
+        String isNew = (added.size() > 0 || removed.size() > 0) ? "new" : "";
+        System.out.println("Here are your " + isNew + " order details: \n");
+        System.out.println(order.asText());
+        state = "askQuestion";
+        System.out.print("Now that your order has been updated, ");
+        parseState();
     }
 
     private void contactInfo() {
         System.out.println("If you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\nNow that's out of the way, would you like me to take your order now, or no?");
-        readYesNo("takeOrder", "askQuestion", Apologies.getRandom() + " Do you want me to take your order?");
+        readYesNo("takeOrder", "askQuestion", " Do you want me to take your order?");
     }
 
 }
@@ -240,16 +378,16 @@ No thanks
 class Orders {
     private ArrayList<Order> orders = new ArrayList<Order>();
 
-    String[] viewOrder(int orderNumber) {
+    viewOrder viewOrder(int orderNumber) {
         for (Order order : orders) {
             if (order.getNumber() == orderNumber) {
-                return order.getItems();
+                return new viewOrder(order);
             }
         }
         return null;
     }
 
-    int saveOrder(String[] items) {
+    viewOrder saveOrder(ArrayList<String> items, ArrayList<Double> prices) {
         int orderNum = genOrderNum();
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getNumber() == orderNum) {
@@ -257,8 +395,25 @@ class Orders {
                 i = 0;
             }
         }
-        orders.add(new Order(orderNum, items));
-        return orderNum;
+        Order order = new Order(orderNum, items, prices);
+        orders.add(order);
+        return new viewOrder(order);
+    }
+
+    void removeItem(int orderNum, String toRemove) {
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getNumber() == orderNum) {
+                orders.get(i).removeItem(toRemove);
+            }
+        }
+    }
+
+    void addItem(int orderNum, String toAdd) {
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getNumber() == orderNum) {
+                orders.get(i).addItem(toAdd);
+            }
+        }
     }
 
     void deleteOrder(int orderNumber) {
@@ -274,7 +429,7 @@ class Orders {
         String string = "";
 
         for (int i = 0; i < orders.size(); i++) {
-            string += orders.get(i).asText() + " ";
+            string += orders.get(i).asText() + ((i == orders.size() - 1) ? "" : "\n\n");
         }
 
         return string;
@@ -285,13 +440,21 @@ class Orders {
     }
 }
 
-class Order {
+class viewOrder {
     private final int orderNumber;
     private String[] items;
+    private Double[] prices;
 
-    Order(int orderNumber, String[] items) {
+    viewOrder(int orderNumber, String[] items, Double[] prices) {
         this.orderNumber = orderNumber;
         this.items = items;
+        this.prices = prices;
+    }
+
+    viewOrder(Order order) {
+        this.orderNumber = order.getNumber();
+        this.items = order.getItems();
+        this.prices = order.getPrices();
     }
 
     int getNumber() {
@@ -302,14 +465,70 @@ class Order {
         return items;
     }
 
+    Double[] getPrices() {
+        return prices;
+    }
+
     String asText() {
         String string = "";
 
         string += "Order #" + String.valueOf(orderNumber) + ": \n";
         for (int i = 0; i < items.length; i++) {
-            string += "Item #" + String.valueOf(i) + ": " + items[i];
-            string += (i == items.length - 1) ? "" : ", ";
+            string += items[i] + " - $" + prices[i];
+            string += (i == items.length - 1) ? "\n" : ", ";
         }
+        string += "Total: $" + Utils.sum(prices);
+
+        return string;
+    }
+    
+}
+
+class Order {
+    private final int orderNumber;
+    private ArrayList<String> items;
+    private ArrayList<Double> prices;
+
+    Order(int orderNumber, ArrayList<String> items, ArrayList<Double> prices) {
+        this.orderNumber = orderNumber;
+        this.items = items;
+        this.prices = prices;
+    }
+    int getNumber() {
+        return orderNumber;
+    }
+
+    String[] getItems() {
+        return items.toArray(new String[0]);
+    }
+
+    Double[] getPrices() {
+        return prices.toArray(new Double[0]);
+    }
+
+    void removeItem(String toRemove) {
+        int index = items.indexOf(toRemove);
+        if (index > -1) {
+            items.remove(index);
+            prices.remove(index);
+        }
+            
+    }
+
+    void addItem(String toAdd) {
+        items.add(toAdd);
+        prices.add(Menu.getInfo(toAdd)[0]);
+    }
+
+    String asText() {
+        String string = "";
+
+        string += "Order #" + String.valueOf(orderNumber) + ": \n";
+        for (int i = 0; i < items.size(); i++) {
+            string += items.get(i) + " - $" + prices.get(i);
+            string += (i == items.size() - 1) ? "\n" : ", ";
+        }
+        string += "Total: $" + Utils.sum(prices.toArray(new Double[0]));
 
         return string;
     }
@@ -1003,17 +1222,78 @@ class Locations {
               408 	Parker 	9558 Twenty Mile Rd. 	CO 	09/05/2024
             """.split("\n");
 
-    static String[][] getLocations(String city, String state) {
-        state = state.toUpperCase();
+    static String[][] getLocationsByPostal(String city, String postal) {
+        postal = postal.toUpperCase();
         boolean matched = false;
         ArrayList<String[]> matches = new ArrayList<String[]>();
         for (String location : locations) {
-            if (location.toLowerCase().contains(city.toLowerCase()) && location.contains(state)) {
+            if (location.toLowerCase().contains(city.toLowerCase()) && location.contains(postal)) {
                 matches.add(location.split("\t"));
                 matched = true;
             }
         }
         return matched ? matches.toArray(new String[0][0]) : null;
+    }
+    static String[][] getLocationsByState(String city, String state) {
+        String[] states = """
+Alaska: AK
+Arizona: AZ
+Arkansas: AR
+California: CA
+Colorado: CO
+Connecticut: CT
+Delaware: DE
+District of Columbia: DC
+Florida: FL
+Georgia: GA
+Hawaii: HI
+Idaho: ID
+Illinois: IL
+Indiana: IN
+Iowa: IA
+Kansas: KS
+Kentucky: KY
+Louisiana: LA
+Maine: ME
+Maryland: MD
+Massachusetts: MA
+Michigan: MI
+Minnesota: MN
+Mississippi: MS
+Missouri: MO
+Montana: MT
+Nebraska: NE
+Nevada: NV
+New Hampshire: NH
+New Jersey: NJ
+New Mexico: NM
+New York: NY
+North Carolina: NC
+North Dakota: ND
+Ohio: OH
+Oklahoma: OK
+Oregon: OR
+Pennsylvania: PA
+Rhode Island: RI
+South Carolina: SC
+South Dakota: SD
+Tennessee: TN
+Texas: TX
+Utah: UT
+Vermont: VT
+Virginia: VA
+Washington: WA
+West Virginia: WV
+Wisconsin: WI
+Wyoming: WY
+""".split("\n");
+        for (String s : states) {
+            if (s.toLowerCase().contains(state.toLowerCase())) {
+                state = s.split(": ")[1];
+                break;
+            }
+        }
+        return getLocationsByPostal(city, state);
     }
 
 }
