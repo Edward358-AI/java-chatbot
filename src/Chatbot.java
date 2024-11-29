@@ -835,7 +835,7 @@ class Apologies {
             "I’m not entirely certain how to respond to that.",
             "Would you mind elaborating?",
             "I’m sorry, but I need more information to assist you.",
-            "That’s beyond my current knowledge.",
+            "That’s beyond my understanding, sorry.",
             "Could you provide more details?",
             "I may need more context to understand fully.",
             "My apologies; I don’t have an answer to that yet.",
