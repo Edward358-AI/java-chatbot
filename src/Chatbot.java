@@ -15,7 +15,7 @@ public class Chatbot {
     // };
     private Orders orders = new Orders();
     private Scanner sc = new Scanner(System.in);
-    private final String[] QUIT = { "quit" };
+    private final String[] QUIT = { "quit" , "q"};
     private final String[] YES = """
 Yes
 Yeah
@@ -51,8 +51,10 @@ No thanks
         return keyword(input, keywords, false);
     }
 
-    private boolean keyword(String input, String[] keywords, boolean checkAll) {
+    private boolean keyword(String s, String[] keywords, boolean checkAll) {
         boolean contained = false;
+        s = s.trim();
+        List<String> input = Arrays.asList(s.split(" "));
         if (checkAll) {
             contained = true;
             for (String keyword : keywords) {
@@ -180,7 +182,7 @@ No thanks
 
     private void welcome() {
         System.out.println(String.format(
-                "%s I am In 'n Out's virtual assistant. If at any time you would like to stop chatting, just say \"quit\"anytime. Can I take your order today?",
+                "%s I am In 'n Out's virtual assistant. If at any time you would like to stop chatting, just say \"quit\" or \"q\" anytime. Can I take your order today?",
                 Greetings.getRandom()));
         readYesNo("takeOrder", "askQuestion", " Can I take your order today?");
     }
@@ -261,10 +263,10 @@ No thanks
     private void nutrition() {
         boolean nutrFound = false;
         do {
-            System.out.println("Regarding nutrition, what food item would you like to get information about? Type \"menu\" to see our menu.");
+            System.out.println("Regarding nutrition, what food item would you like to get information about? Type \"menu\" or \"m\" to see our menu.");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
-            if (keyword(food, new String[]{"menu"})) {
+            if (keyword(food, new String[]{"menu", "m"})) {
                 Menu.printMenu();
                 continue;
             }
@@ -302,10 +304,10 @@ No thanks
         
         boolean finished = false;
         do {
-            System.out.println("Please enter an item in you order you would like to remove. Type \"menu\" anytime to view the menu. When finished, type \"finished\"");
+            System.out.println("Please enter an item in you order you would like to remove. Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
-            if (keyword(food, new String[]{"menu"})) {
+            if (keyword(food, new String[]{"menu", "m"})) {
                 Menu.printMenu();
                 continue;
             }
@@ -334,10 +336,10 @@ No thanks
         finished = false;
 
         do {
-            System.out.println("Please enter an item in you order you would like to add. Type \"menu\" anytime to view the menu. When finished, type \"finished\"");
+            System.out.println("Please enter an item in you order you would like to add. Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
-            if (keyword(food, new String[]{"menu"})) {
+            if (keyword(food, new String[]{"menu", "m"})) {
                 Menu.printMenu();
                 continue;
             }
