@@ -253,8 +253,9 @@ No thanks
                 System.out.print(Apologies.getRandom()+" There were no locations found/the city and state were invalid. ");
             }
         } while (!locFound);
-        System.out.println("Hopefully you found what you were looking for. Do you want me to take your order now?");
-        readYesNo("takeOrder", "askQuestion", " Do you want me to take your order?");
+        state = "askQuestion";
+        System.out.print("Hopefully you found what you were looking for. ");
+        parseState();
     }
 
     private void nutrition() {
@@ -275,8 +276,9 @@ No thanks
                 System.out.print(Apologies.getRandom() + " ");
             }
         } while (!nutrFound);
-        System.out.println("Hopefully you found what you were looking for. Do you want me to take your order now?");
-        readYesNo("takeOrder", "askQuestion", " Do you want me to take your order?");
+        state = "askQuestion";
+        System.out.print("Hopefully you found what you were looking for. ");
+        parseState();
     }
 
     private void viewOrders() {
@@ -330,7 +332,7 @@ No thanks
 
         System.out.println();
         finished = false;
-        
+
         do {
             System.out.println("Please enter an item in you order you would like to add. Type \"menu\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
@@ -370,7 +372,9 @@ No thanks
 
     private void contactInfo() {
         System.out.println("If you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\nNow that's out of the way, would you like me to take your order now, or no?");
-        readYesNo("takeOrder", "askQuestion", " Do you want me to take your order?");
+        state = "askQuestion";
+        System.out.print("Now that's out of the way, ");
+        parseState();
     }
 
 }
