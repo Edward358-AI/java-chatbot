@@ -16,4 +16,6 @@ public class Colors {
     public static final String YELLOW_BG = "\u001B[43m";
     public static final String PURPLE_BG = "\u001B[45m";
     public static final String CYAN_BG = "\u001B[46m";
+
+    public static final String RESET = "\u001B[0m";
 }
