@@ -15,7 +15,7 @@ public class Chatbot {
     // };
     private Orders orders = new Orders();
     private Scanner sc = new Scanner(System.in);
-    private final String[] QUIT = { "quit", "q" };
+    private final String[] QUIT = { "quit" };
     private final String[] YES = """
 Yes
 Yeah
@@ -131,7 +131,7 @@ No thanks
                     tempState = "welcome";
                 } else {
                     System.out.println(Apologies.getRandom() + " Would you like information regarding location, nutrition, or contact info? Or would you like to view the order queue?");
-                    tempState = null;
+                    continue;
                 }
             }
         } while (tempState == null);
@@ -180,7 +180,7 @@ No thanks
 
     private void welcome() {
         System.out.println(String.format(
-                "%s I am In 'n Out's virtual assistant. If at any time you would like to stop chatting, just say \"quit\" or \"q\" anytime. Can I take your order today?",
+                "%s I am In 'n Out's virtual assistant. If at any time you would like to stop chatting, just say \"quit\"anytime. Can I take your order today?",
                 Greetings.getRandom()));
         readYesNo("takeOrder", "askQuestion", " Can I take your order today?");
     }
@@ -763,9 +763,9 @@ class Drinks {
 
 class Shakes {
     static final String[] ITEMS = {
-            "Chocolate",
-            "Strawberry",
-            "Vanilla"
+            "Chocolate Shake",
+            "Strawberry Shake",
+            "Vanilla Shake"
     };
     static final double[] PRICES = {
             3.59,
