@@ -310,9 +310,15 @@ No thanks
     }
 
     private void viewOrders() {
-        System.out.println("Here is the list of current orders:\n\n" + orders.asText());
-        System.out.println("Would you like to update any of these orders?");
-        readYesNo("updateOrder", "askQuestion", " Would you like to update an order?");
+        if (orders.queueEmpty()) {
+            System.out.println("There are no orders to display.");
+            state = "askQuestion";
+            parseState();
+        } else {
+            System.out.println("Here is the list of current orders:\n\n" + orders.asText());
+            System.out.println("Would you like to update any of these orders?");
+            readYesNo("updateOrder", "askQuestion", " Would you like to update an order?");
+        }
     }
 
     private void updateOrder() {
@@ -409,6 +415,10 @@ No thanks
 
 class Orders {
     private ArrayList<Order> orders = new ArrayList<Order>();
+
+    boolean queueEmpty() {
+        return orders.size() == 0;
+    }
 
     viewOrder viewOrder(int orderNumber) {
         for (Order order : orders) {
