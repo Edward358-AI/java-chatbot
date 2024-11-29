@@ -47,11 +47,37 @@ No thanks
             """.toLowerCase().split("\n");
     private String state = "welcome";
 
+    private boolean keyword(String s, String[] keywords, boolean checkAll) {
+        boolean contained = false;
+        if (checkAll) {
+            contained = true;
+            for (String keyword : keywords) {
+                if (!s.contains(keyword)) {
+                    contained = false;
+                    break;
+                }
+            }
+        } else {
+            for (String keyword : keywords) {
+                if (s.contains(keyword)) {
+                    contained = true;
+                    break;
+                }
+            }
+        }
+
+        return contained;
+    }
+
     private boolean keyword(String input, String[] keywords) {
         return keyword(input, keywords, false);
     }
 
-    private boolean keyword(String s, String[] keywords, boolean checkAll) {
+    private boolean keyContains(String input, String[] keywords) {
+        return keyContains(input, keywords, false);
+    }
+    
+    private boolean keyContains(String s, String[] keywords, boolean checkAll) {
         boolean contained = false;
         s = s.trim();
         List<String> input = Arrays.asList(s.split(" "));
@@ -76,7 +102,7 @@ No thanks
     }
 
     private void checkQuit(String input) {
-        if (keyword(input, QUIT)) {
+        if (keyContains(input, QUIT)) {
             state = "goodbye";
             parseState();
         }
@@ -86,7 +112,7 @@ No thanks
         String tempState = null;
         do {
             String resp = sc.nextLine().toLowerCase();
-            if (keyword(resp, QUIT)) {
+            if (keyContains(resp, QUIT)) {
                 tempState = "goodbye";
             } else {
                 if (keyword(resp, YES) && !keyword(resp, NO)) {
@@ -118,7 +144,7 @@ No thanks
             boolean choseContact = keyword(resp, contact);
             boolean choseOrder = keyword(resp, vieworder1) && keyword(resp, vieworder2);
             boolean saidNo = keyword(resp, NO);
-            if (keyword(resp, QUIT)) {
+            if (keyContains(resp, QUIT)) {
                 tempState = "goodbye";
             } else {
                 if (choseLocation && !choseNutrition && !choseOrder && !choseContact && !saidNo) {
@@ -266,7 +292,7 @@ No thanks
             System.out.println("Regarding nutrition, what food item would you like to get information about? Type \"menu\" or \"m\" to see our menu.");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
-            if (keyword(food, new String[]{"menu", "m"})) {
+            if (keyContains(food, new String[]{"menu", "m"})) {
                 Menu.printMenu();
                 continue;
             }
@@ -307,7 +333,7 @@ No thanks
             System.out.println("Please enter an item in you order you would like to remove. Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
-            if (keyword(food, new String[]{"menu", "m"})) {
+            if (keyContains(food, new String[]{"menu", "m"})) {
                 Menu.printMenu();
                 continue;
             }
@@ -339,7 +365,7 @@ No thanks
             System.out.println("Please enter an item in you order you would like to add. Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
-            if (keyword(food, new String[]{"menu", "m"})) {
+            if (keyContains(food, new String[]{"menu", "m"})) {
                 Menu.printMenu();
                 continue;
             }
