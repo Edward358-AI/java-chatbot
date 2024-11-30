@@ -218,7 +218,7 @@ No thanks
 
     private void goodbye() {
         Printer.println(
-            Goodbyes.getRandom() + "As the In 'n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!",
+            Goodbyes.getRandom() + " As the In 'n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!",
             Colors.PURPLE_FG
         );
     }
