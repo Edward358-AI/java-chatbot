@@ -125,7 +125,7 @@ No thanks
                 } else if (!keyword(resp, YES) && keyword(resp, NO)) {
                     tempState = noState;
                 } else {
-                    Printer.println(Apologies.getRandom() + customErrMsg);
+                    Printer.println(Apologies.getRandom() + customErrMsg, Colors.RED_FG);
                     tempState = null;
                 }
             }
@@ -162,7 +162,7 @@ No thanks
                 }  else if (!choseLocation && !choseNutrition && !choseOrder && !choseContact && saidNo) {
                     tempState = "welcome";
                 } else {
-                    Printer.println(Apologies.getRandom() + " Would you like information regarding location, nutrition, or contact info? Or would you like to view the order queue?");
+                    Printer.println(Apologies.getRandom() + " Would you like information regarding location, nutrition, or contact info? Or would you like to view the order queue?", Colors.RED_FG);
                     continue;
                 }
             }
@@ -217,8 +217,10 @@ No thanks
     }
 
     private void goodbye() {
-        Printer.println(String.format(
-                "%s As the In 'n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!", Goodbyes.getRandom()));
+        Printer.println(
+            Goodbyes.getRandom() + "As the In 'n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!",
+            Colors.PURPLE_FG
+        );
     }
 
     private void takeOrder() {
@@ -235,7 +237,7 @@ No thanks
             checkQuit(cItem);
             if (keyword(cItem, new String[]{"finished", "finish", "done", "end", "ready"})) {
                 if (orderItems.size() == 0) {
-                    Printer.print("You must enter at least one item. ");
+                    Printer.print("You must enter at least one item. ", Colors.RED_FG);
                     continue;
                 } else {
                     finished = true;
@@ -246,7 +248,7 @@ No thanks
                     orderPrices.add(Menu.getInfo(cItem)[0]);
                     Printer.println(Utils.capitalize(cItem) + " added to your order.");
                 } else {
-                    Printer.println("Food item not found. Please check your spelling and try again. Thanks!");
+                    Printer.println("Food item not found. Please check your spelling and try again. Thanks!", Colors.RED_FG);
                     continue;
                 }
             }
@@ -280,7 +282,7 @@ No thanks
                 }
                 locFound = true;
             } else {
-                Printer.print(Apologies.getRandom()+" There were no locations found/the city and state were invalid. ");
+                Printer.print(Apologies.getRandom()+" There were no locations found/the city and state were invalid. ", Colors.RED_FG);
             }
         } while (!locFound);
         Printer.print("Hopefully you found what you were looking for. ");
@@ -302,7 +304,7 @@ No thanks
                 Printer.println(Utils.capitalize(food) + " has " + (int) nutrInfo[1] + " calories.");
                 nutrFound = true;
             } else {
-                Printer.print(Apologies.getRandom() + " ");
+                Printer.print(Apologies.getRandom() + " ", Colors.RED_FG);
             }
         } while (!nutrFound);
         Printer.print("Hopefully you found what you were looking for. ");
@@ -311,7 +313,7 @@ No thanks
 
     private void viewOrders() {
         if (orders.queueEmpty()) {
-            Printer.println("There are no orders to display.");
+            Printer.println("There are no orders to display.", Colors.RED_FG);
             setState("askQuestion");
         } else {
             Printer.println("Here is the list of current orders:\n\n" + orders.asText());
@@ -344,7 +346,7 @@ No thanks
             }
             if (keyword(food, new String[]{"finished", "finish", "done", "end", "ready"})) {
                 if (removed.size() == 0) {
-                    Printer.print("No items were removed from order.");
+                    Printer.print("No items were removed from order.", Colors.RED_FG);
                     finished = true;
                 } else {
                     finished = true;
@@ -357,7 +359,7 @@ No thanks
                     Printer.println(food + " was removed from order #" + orderNum + ".");
                     continue;
                 } else {
-                    Printer.println("Food item not found/not in order. Please check your spelling and try again. Thanks!");
+                    Printer.println("Food item not found/not in order. Please check your spelling and try again. Thanks!", Colors.RED_FG);
                     continue;
                 }
             }
@@ -376,7 +378,7 @@ No thanks
             }
             if (keyword(food, new String[]{"finished", "finish", "done", "end", "ready"})) {
                 if (added.size() == 0) {
-                    Printer.print("No items were added to order.");
+                    Printer.print("No items were added to order.", Colors.RED_FG);
                     finished = true;
                 } else {
                     finished = true;
@@ -389,7 +391,7 @@ No thanks
                     Printer.println(food + " was added to order #" + orderNum + ".");
                     continue;
                 } else {
-                    Printer.println("Food item not found. Please check your spelling and try again. Thanks!");
+                    Printer.println("Food item not found. Please check your spelling and try again. Thanks!", Colors.RED_FG);
                     continue;
                 }
             }

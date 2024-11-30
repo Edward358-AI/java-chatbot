@@ -1,5 +1,6 @@
 package data;
 
+import utility.Colors;
 import utility.Printer;
 
 public class Menu {
@@ -39,24 +40,24 @@ public class Menu {
     }
 
     public static void printMenu() {
-        Printer.print("Food items:");
-        for (int i = 0; i<Food.ITEMS.length;i++) {
-            Printer.print(Food.ITEMS[i] + ": $" + Food.PRICES[i]);
+        Printer.print("Food items:", Colors.CYAN_FG);
+        for (int i = 0; i < Food.ITEMS.length; i++) {
+            Printer.print(Food.ITEMS[i] + ": $" + Colors.GREEN_FG + Food.PRICES[i]);
         }
 
-        Printer.print("\nDrinks:");
-        for (int i = 0; i<Drinks.ITEMS.length;i++) {
-            Printer.print(Drinks.ITEMS[i] + ": $" + Drinks.PRICES[i]);
+        Printer.print("\nDrinks:", Colors.CYAN_FG);
+        for (int i = 0; i < Drinks.ITEMS.length; i++) {
+            Printer.print(Drinks.ITEMS[i] + ": $" + Colors.GREEN_FG + Drinks.PRICES[i]);
         }
 
-        Printer.print("\nShakes:");
-        for (int i = 0; i<Shakes.ITEMS.length;i++) {
-            Printer.print(Shakes.ITEMS[i] + ": $" + Shakes.PRICES[i]);
+        Printer.print("\nShakes:", Colors.CYAN_FG);
+        for (int i = 0; i < Shakes.ITEMS.length; i++) {
+            Printer.print(Shakes.ITEMS[i] + ": $" + Colors.GREEN_FG + Shakes.PRICES[i]);
         }
 
-        Printer.print("\n(Not so) Secret Menu:");
-        for (int i = 0; i<Secret.ITEMS.length;i++) {
-            Printer.print(Secret.ITEMS[i] + ": $" + Secret.PRICES[i]);
+        Printer.print("\n(Not so) Secret Menu:", Colors.CYAN_FG);
+        for (int i = 0; i < Secret.ITEMS.length; i++) {
+            Printer.print(Secret.ITEMS[i] + ": $" + Colors.GREEN_FG + Secret.PRICES[i]);
         }
     }
 }
