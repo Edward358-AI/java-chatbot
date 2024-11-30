@@ -52,7 +52,6 @@ Not today
 Not right now
 No thanks
             """.toLowerCase().split("\n");
-    private String state;
 
     private boolean keyword(String s, String[] keywords, boolean checkAll) {
         boolean contained = false;
@@ -176,7 +175,6 @@ No thanks
     }
 
     private void setState(String state) {
-        this.state = state;
         switch (state) {
             case "welcome":
                 welcome();
