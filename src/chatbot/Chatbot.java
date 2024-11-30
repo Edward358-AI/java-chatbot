@@ -134,7 +134,7 @@ No thanks
     }
 
     private void askQuestion() {
-        Printer.println("Do you have any questions regarding location, nutrition, or contact info, or would you like to view the orders? Please choose one.");
+        Printer.println("Do you have any questions regarding location, nutrition, or contact info, or would you like to view the orders? Please choose one (or say no to be redirected to the start screen).");
         String[] location = {"location"};
         String[] nutrition = {"nutrition"};
         String[] contact = {"contact"};
@@ -246,7 +246,7 @@ No thanks
                 if (Menu.getInfo(cItem) != null) {
                     orderItems.add(Utils.capitalize(cItem));
                     orderPrices.add(Menu.getInfo(cItem)[0]);
-                    Printer.println(Utils.capitalize(cItem) + " added to your order.", Colors.BLUE_FG);
+                    Printer.println(Utils.capitalize(cItem) + " added to your order.", Colors.PURPLE_FG);
                 } else {
                     Printer.println("Food item not found. Please check your spelling and try again. Thanks!", Colors.RED_FG);
                     continue;
@@ -255,7 +255,7 @@ No thanks
         } while (!finished);
         ViewOrder order = orders.saveOrder(orderItems, orderPrices);
         Printer.println("Here are your order details: \n");
-        Printer.println(order.asText());
+        Printer.println(order.asText(), Colors.RESET);
         Printer.print("While you're waiting, ");
         setState("askQuestion");
     }

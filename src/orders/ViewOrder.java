@@ -1,6 +1,7 @@
 package orders;
 
 import utility.Utils;
+import utility.Colors;
 
 public class ViewOrder {
     private int orderNumber;
@@ -36,10 +37,10 @@ public class ViewOrder {
 
         string += "Order #" + String.valueOf(orderNumber) + ": \n";
         for (int i = 0; i < items.length; i++) {
-            string += items[i] + " - $" + prices[i];
+            string += items[i] + " - " + Colors.GREEN_FG + "$" + prices[i] + Colors.RESET;
             string += (i == items.length - 1) ? "\n" : ", ";
         }
-        string += "Total: $" + Utils.sum(prices);
+        string += "Total: " + Colors.GREEN_FG + "$" + Utils.sum(prices) + Colors.RESET;
 
         return string;
     }

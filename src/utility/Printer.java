@@ -2,7 +2,7 @@ package utility;
 
 public class Printer {
     public static void print() {
-        System.out.print("");
+        System.out.print(Colors.RESET);
     }
 
     public static void print(String x) {
@@ -14,7 +14,7 @@ public class Printer {
     }
 
     public static void println() {
-        System.out.println("");
+        System.out.println(Colors.RESET);
     }
 
     public static void println(String x) {

@@ -1,6 +1,8 @@
 package orders;
 
 import java.util.ArrayList;
+
+import utility.Colors;
 import utility.Utils;
 import data.Menu;
 
@@ -46,10 +48,10 @@ public class Order {
 
         string += "Order #" + String.valueOf(orderNumber) + ": \n";
         for (int i = 0; i < items.size(); i++) {
-            string += items.get(i) + " - $" + prices.get(i);
+            string += items.get(i) + " - " + Colors.GREEN_FG + "$" + prices.get(i) + Colors.RESET;
             string += (i == items.size() - 1) ? "\n" : ", ";
         }
-        string += "Total: $" + Utils.sum(prices.toArray(new Double[0]));
+        string += "Total: " + Colors.GREEN_FG + "$" + Utils.sum(prices.toArray(new Double[0])) + Colors.RESET;
 
         return string;
     }
