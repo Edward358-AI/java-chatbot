@@ -2,7 +2,7 @@ package chatbot;
 
 import java.util.*;
 
-import orders.Order;
+import orders.*;
 import utility.*;
 import data.*;
 import responses.*;
@@ -253,7 +253,7 @@ No thanks
                 }
             }
         } while (!finished);
-        viewOrder order = orders.saveOrder(orderItems, orderPrices);
+        ViewOrder order = orders.saveOrder(orderItems, orderPrices);
         Printer.println("Here are your order details: \n");
         Printer.println(order.asText());
         Printer.print("While you're waiting, ");
@@ -396,7 +396,7 @@ No thanks
                 }
             }
         } while (!finished);
-        viewOrder order = orders.viewOrder(orderNum);
+        ViewOrder order = orders.viewOrder(orderNum);
         String isNew = (added.size() > 0 || removed.size() > 0) ? "new" : "";
         Printer.println("Here are your " + isNew + " order details: \n");
         Printer.println(order.asText());
@@ -410,117 +410,4 @@ No thanks
         setState("askQuestion");
     }
 
-}
-
-class Orders {
-    private ArrayList<Order> orders = new ArrayList<Order>();
-
-    boolean queueEmpty() {
-        return orders.size() == 0;
-    }
-
-    viewOrder viewOrder(int orderNumber) {
-        for (Order order : orders) {
-            if (order.getNumber() == orderNumber) {
-                return new viewOrder(order);
-            }
-        }
-        return null;
-    }
-
-    viewOrder saveOrder(ArrayList<String> items, ArrayList<Double> prices) {
-        int orderNum = genOrderNum();
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getNumber() == orderNum) {
-                orderNum = genOrderNum();
-                i = 0;
-            }
-        }
-        Order order = new Order(orderNum, items, prices);
-        orders.add(order);
-        return new viewOrder(order);
-    }
-
-    void removeItem(int orderNum, String toRemove) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getNumber() == orderNum) {
-                orders.get(i).removeItem(toRemove);
-            }
-        }
-    }
-
-    void addItem(int orderNum, String toAdd) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getNumber() == orderNum) {
-                orders.get(i).addItem(toAdd);
-            }
-        }
-    }
-
-    void deleteOrder(int orderNumber) {
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getNumber() == orderNumber) {
-                orders.remove(i);
-                break;
-            }
-        }
-    }
-
-    String asText() {
-        String string = "";
-
-        for (int i = 0; i < orders.size(); i++) {
-            string += orders.get(i).asText() + ((i == orders.size() - 1) ? "" : "\n\n");
-        }
-
-        return string;
-    }
-
-    private int genOrderNum() {
-        return Utils.randint(1, 100);
-    }
-}
-
-class viewOrder {
-    private final int orderNumber;
-    private String[] items;
-    private Double[] prices;
-
-    viewOrder(int orderNumber, String[] items, Double[] prices) {
-        this.orderNumber = orderNumber;
-        this.items = items;
-        this.prices = prices;
-    }
-
-    viewOrder(Order order) {
-        this.orderNumber = order.getNumber();
-        this.items = order.getItems();
-        this.prices = order.getPrices();
-    }
-
-    int getNumber() {
-        return orderNumber;
-    }
-
-    String[] getItems() {
-        return items;
-    }
-
-    Double[] getPrices() {
-        return prices;
-    }
-
-    String asText() {
-        String string = "";
-
-        string += "Order #" + String.valueOf(orderNumber) + ": \n";
-        for (int i = 0; i < items.length; i++) {
-            string += items[i] + " - $" + prices[i];
-            string += (i == items.length - 1) ? "\n" : ", ";
-        }
-        string += "Total: $" + Utils.sum(prices);
-
-        return string;
-    }
-    
 }
