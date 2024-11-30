@@ -22,7 +22,7 @@ public class Chatbot {
     // };
     private Orders orders = new Orders();
     private Scanner sc = new Scanner(System.in);
-    private final String[] QUIT = { "quit" , "q"};
+    private final String[] QUIT = {"quit" , "q"};
     private final String[] YES = """
 Yes
 Yeah
