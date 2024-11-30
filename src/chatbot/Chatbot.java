@@ -52,7 +52,7 @@ Not today
 Not right now
 No thanks
             """.toLowerCase().split("\n");
-    private String state = "welcome";
+    private String state;
 
     private boolean keyword(String s, String[] keywords, boolean checkAll) {
         boolean contained = false;
@@ -110,8 +110,7 @@ No thanks
 
     private void checkQuit(String input) {
         if (keyContains(input, QUIT)) {
-            state = "goodbye";
-            parseState();
+            setState("goodbye");
         }
     }
 
@@ -132,8 +131,7 @@ No thanks
                 }
             }
         } while (tempState == null);
-        state = tempState;
-        parseState();
+        setState(tempState);
     }
 
     private void askQuestion() {
@@ -170,15 +168,15 @@ No thanks
                 }
             }
         } while (tempState == null);
-        state = tempState;
-        parseState();
+        setState(tempState);
     }
 
     public void initialize() {
-        parseState();
+        setState("welcome");
     }
 
-    private void parseState() {
+    private void setState(String state) {
+        this.state = state;
         switch (state) {
             case "welcome":
                 welcome();
@@ -258,9 +256,8 @@ No thanks
         viewOrder order = orders.saveOrder(orderItems, orderPrices);
         Printer.print("Here are your order details: \n");
         Printer.print(order.asText());
-        state = "askQuestion";
         System.out.print("While you're waiting, ");
-        parseState();
+        setState("askQuestion");
     }
 
     private void location() {
@@ -288,9 +285,8 @@ No thanks
                 System.out.print(Apologies.getRandom()+" There were no locations found/the city and state were invalid. ");
             }
         } while (!locFound);
-        state = "askQuestion";
         System.out.print("Hopefully you found what you were looking for. ");
-        parseState();
+        setState("askQuestion");
     }
 
     private void nutrition() {
@@ -311,16 +307,14 @@ No thanks
                 System.out.print(Apologies.getRandom() + " ");
             }
         } while (!nutrFound);
-        state = "askQuestion";
         System.out.print("Hopefully you found what you were looking for. ");
-        parseState();
+        setState("askQuestion");
     }
 
     private void viewOrders() {
         if (orders.queueEmpty()) {
             Printer.print("There are no orders to display.");
-            state = "askQuestion";
-            parseState();
+            setState("askQuestion");
         } else {
             Printer.print("Here is the list of current orders:\n\n" + orders.asText());
             Printer.print("Would you like to update any of these orders?");
@@ -406,16 +400,14 @@ No thanks
         String isNew = (added.size() > 0 || removed.size() > 0) ? "new" : "";
         Printer.print("Here are your " + isNew + " order details: \n");
         Printer.print(order.asText());
-        state = "askQuestion";
         System.out.print("Now that your order has been updated, ");
-        parseState();
+        setState("askQuestion");
     }
 
     private void contactInfo() {
-        Printer.print("If you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\nNow that's out of the way, would you like me to take your order now, or no?");
-        state = "askQuestion";
+        Printer.print("\nIf you have any questions, please go to https://in-n-out.com/contact if you have any particular questions, comments, and concerns.\nWe are also available by phone, you can dial an associate at 1-800-786-1000. Our office hours are:\nSunday to Thursday: 8am - 1am\nFriday to Saturday: 8am to 1:30am\nYou can also write directly to customer service, here is our mailbox:\nIn-N-Out Burgers Corporate Office\n4199 Campus Drive, 9th Floor\nIrvine, CA 92612\n\n");
         System.out.print("Now that's out of the way, ");
-        parseState();
+        setState("askQuestion");
     }
 
 }
