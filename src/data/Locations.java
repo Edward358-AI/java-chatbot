@@ -474,7 +474,7 @@ public class Locations {
 
         for (String location : locations) {
             if (location.toLowerCase().contains(city.toLowerCase()) && location.contains(postal)) {
-                matches.add(location.split("\t"));
+                matches.add(location.split(" \t"));
                 matched = true;
             }
         }

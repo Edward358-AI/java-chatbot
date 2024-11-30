@@ -40,24 +40,24 @@ public class Menu {
     }
 
     public static void printMenu() {
-        Printer.println("Food items:", Colors.CYAN_FG);
+        Printer.println("Food items:");
         for (int i = 0; i < Food.ITEMS.length; i++) {
-            Printer.println(Food.ITEMS[i] + ": $" + Colors.GREEN_FG + Food.PRICES[i]);
+            Printer.println(Food.ITEMS[i] + ":" + Colors.GREEN_FG + " $" + Food.PRICES[i]);
         }
 
-        Printer.println("\nDrinks:", Colors.CYAN_FG);
+        Printer.println("\nDrinks:");
         for (int i = 0; i < Drinks.ITEMS.length; i++) {
-            Printer.println(Drinks.ITEMS[i] + ": $" + Colors.GREEN_FG + Drinks.PRICES[i]);
+            Printer.println(Drinks.ITEMS[i] + ":" + Colors.GREEN_FG + " $" + Drinks.PRICES[i]);
         }
 
-        Printer.println("\nShakes:", Colors.CYAN_FG);
+        Printer.println("\nShakes:");
         for (int i = 0; i < Shakes.ITEMS.length; i++) {
-            Printer.println(Shakes.ITEMS[i] + ": $" + Colors.GREEN_FG + Shakes.PRICES[i]);
+            Printer.println(Shakes.ITEMS[i] + ":" + Colors.GREEN_FG + " $" + Shakes.PRICES[i]);
         }
 
-        Printer.println("\n(Not so) Secret Menu:", Colors.CYAN_FG);
+        Printer.println("\n(Not so) Secret Menu:");
         for (int i = 0; i < Secret.ITEMS.length; i++) {
-            Printer.println(Secret.ITEMS[i] + ": $" + Colors.GREEN_FG + Secret.PRICES[i]);
+            Printer.println(Secret.ITEMS[i] + ":" + Colors.GREEN_FG + " $" + Secret.PRICES[i]);
         }
     }
 }

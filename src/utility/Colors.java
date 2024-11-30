@@ -5,7 +5,7 @@ public class Colors {
     public static final String BLACK_FG = "\u001B[30m";
     public static final String RED_FG = "\u001B[31m";
     public static final String BLUE_FG = "\u001B[34m";
-    public static final String GREEN_FG = "\u001B[32m	";
+    public static final String GREEN_FG = "\u001B[32m";
     public static final String YELLOW_FG = "\u001B[33m";
     public static final String PURPLE_FG = "\u001B[35m";
     public static final String CYAN_FG = "\u001B[36m";

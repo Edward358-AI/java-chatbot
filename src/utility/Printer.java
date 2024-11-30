@@ -18,7 +18,7 @@ public class Printer {
     }
 
     public static void println(String x) {
-        System.out.println(x);
+        System.out.println(Colors.YELLOW_FG + x + Colors.RESET);
     }
 
     public static void println(String x, String color) {
