@@ -1,4 +1,5 @@
 package utility;
+
 public class Colors {
     public static final String WHITE_FG = "\u001B[37m";
     public static final String BLACK_FG = "\u001B[30m";

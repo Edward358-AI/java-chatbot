@@ -1,8 +1,6 @@
-package chatbot;
+package utility;
 
-import utility.Colors;
-
-class Printer {
+public class Printer {
     public static void print() {
         System.out.println("");
     }
