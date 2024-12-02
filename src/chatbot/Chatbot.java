@@ -331,6 +331,8 @@ No thanks
             checkQuit(s);
             if (Utils.strIsInt(s) && orders.viewOrder(Integer.parseInt(s)) != null) {
                 orderNum = Integer.parseInt(s);
+            } else {
+                Printer.println("Order number does not exist/is not a number.", Colors.RED_FG);
             }
         } while (orderNum == 0);
         
