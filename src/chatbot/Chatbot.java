@@ -245,7 +245,7 @@ No thanks
                 if (Menu.getInfo(cItem) != null) {
                     orderItems.add(Utils.capitalize(cItem));
                     orderPrices.add(Menu.getInfo(cItem)[0]);
-                    Printer.println(Utils.capitalize(cItem) + " added to your order.", Colors.PURPLE_FG);
+                    Printer.println(Utils.capitalize(cItem) + " added to your order.", Colors.GREEN_FG);
                 } else {
                     Printer.println("Food item not found. Please check your spelling and try again. Thanks!", Colors.RED_FG);
                     continue;
@@ -253,7 +253,7 @@ No thanks
             }
         } while (!finished);
         ViewOrder order = orders.saveOrder(orderItems, orderPrices);
-        Printer.println("Here are your order details: \n");
+        Printer.println("Here are your order details:");
         Printer.println(order.asText(), Colors.RESET);
         Printer.print("While you're waiting, ");
         setState("askQuestion");
@@ -397,7 +397,7 @@ No thanks
         } while (!finished);
         ViewOrder order = orders.viewOrder(orderNum);
         String isNew = (added.size() > 0 || removed.size() > 0) ? "new" : "";
-        Printer.println("Here are your " + isNew + " order details: \n");
+        Printer.println("Here are your " + isNew + " order details:");
         Printer.println(order.asText());
         Printer.print("Now that your order has been updated, ");
         setState("askQuestion");
