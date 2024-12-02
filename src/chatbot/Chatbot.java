@@ -218,8 +218,7 @@ No thanks
 
     private void goodbye() {
         Printer.println(
-            Goodbyes.getRandom() + " As the In 'n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!",
-            Colors.PURPLE_FG
+            Goodbyes.getRandom() + " As the In 'n' Out chatbot, I don't necessarily deliver quality you can taste, but quality you can trust! Until next time!"
         );
     }
 
@@ -237,7 +236,7 @@ No thanks
             checkQuit(cItem);
             if (keyword(cItem, new String[]{"finished", "finish", "done", "end", "ready"})) {
                 if (orderItems.size() == 0) {
-                    Printer.print("You must enter at least one item. ", Colors.RED_FG);
+                    Printer.println("You must enter at least one item. ", Colors.RED_FG);
                     continue;
                 } else {
                     finished = true;
@@ -278,7 +277,7 @@ No thanks
             if (locations != null) {
                 Printer.println("Here are the locations in the area that you specified.");
                 for (String[] location : locations) {
-                    Printer.println(location[2] + ", " + location[1] + ", " + location[3], Colors.BLUE_FG);
+                    Printer.println(location[2] + ", " + location[1] + ", " + location[3], Colors.GREEN_FG);
                 }
                 locFound = true;
             } else {
@@ -301,7 +300,7 @@ No thanks
             }
             double[] nutrInfo = Menu.getInfo(food);
             if (nutrInfo != null) {
-                Printer.println(Utils.capitalize(food) + " has " + (int) nutrInfo[1] + " calories.", Colors.BLUE_FG);
+                Printer.println(Utils.capitalize(food) + " has " + (int) nutrInfo[1] + " calories.", Colors.GREEN_FG);
                 nutrFound = true;
             } else {
                 Printer.print(Apologies.getRandom() + " ", Colors.RED_FG);
@@ -356,7 +355,7 @@ No thanks
                     food = Utils.capitalize(food);
                     orders.removeItem(orderNum, food);
                     removed.add(food);
-                    Printer.println(food + " was removed from order #" + orderNum + ".", Colors.BLUE_FG);
+                    Printer.println(food + " was removed from order #" + orderNum + ".", Colors.GREEN_FG);
                     continue;
                 } else {
                     Printer.println("Food item not found/not in order. Please check your spelling and try again. Thanks!", Colors.RED_FG);
@@ -388,7 +387,7 @@ No thanks
                     food = Utils.capitalize(food);
                     orders.addItem(orderNum, food);
                     added.add(food);
-                    Printer.println(food + " was added to order #" + orderNum + ".", Colors.BLUE_FG);
+                    Printer.println(food + " was added to order #" + orderNum + ".", Colors.GREEN_FG);
                     continue;
                 } else {
                     Printer.println("Food item not found. Please check your spelling and try again. Thanks!", Colors.RED_FG);
