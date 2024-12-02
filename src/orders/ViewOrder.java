@@ -33,9 +33,9 @@ public class ViewOrder {
     }
 
     public String asText() {
-        String string = "";
+        String string = Colors.RESET;
 
-        string += "Order #" + String.valueOf(orderNumber) + ": \n";
+        string += "Order " + Colors.GREEN_FG + "#" + String.valueOf(orderNumber) + ": \n" + Colors.RESET;
         for (int i = 0; i < items.length; i++) {
             string += items[i] + " - " + Colors.GREEN_FG + "$" + prices[i] + Colors.RESET;
             string += (i == items.length - 1) ? "\n" : ", ";

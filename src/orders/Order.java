@@ -44,9 +44,9 @@ public class Order {
     }
 
     public String asText() {
-        String string = "";
+        String string = Colors.RESET;
 
-        string += "Order #" + String.valueOf(orderNumber) + ": \n";
+        string += "Order " + Colors.GREEN_FG + "#" + String.valueOf(orderNumber) + ": \n" + Colors.RESET;
         for (int i = 0; i < items.size(); i++) {
             string += items.get(i) + " - " + Colors.GREEN_FG + "$" + prices.get(i) + Colors.RESET;
             string += (i == items.size() - 1) ? "\n" : ", ";

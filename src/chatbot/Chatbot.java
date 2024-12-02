@@ -254,7 +254,7 @@ No thanks
         } while (!finished);
         ViewOrder order = orders.saveOrder(orderItems, orderPrices);
         Printer.println("Here are your order details:");
-        Printer.println(order.asText(), Colors.RESET);
+        Printer.println(order.asText());
         Printer.print("While you're waiting, ");
         setState("askQuestion");
     }
@@ -315,7 +315,7 @@ No thanks
             Printer.println("There are no orders to display.", Colors.RED_FG);
             setState("askQuestion");
         } else {
-            Printer.println("Here is the list of current orders:\n\n" + orders.asText());
+            Printer.println("Here is the list of current orders:\n" + orders.asText());
             Printer.println("Would you like to update any of these orders?");
             readYesNo("updateOrder", "askQuestion", " Would you like to update an order?");
         }
@@ -338,7 +338,7 @@ No thanks
         
         boolean finished = false;
         do {
-            Printer.println("Please enter an item in you order you would like to remove. Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
+            Printer.println("Please enter an item in you order you would like to remove from order #" + orderNum + ". Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
             if (keyContains(food, new String[]{"menu", "m"})) {
@@ -370,7 +370,7 @@ No thanks
         finished = false;
 
         do {
-            Printer.println("Please enter an item in you order you would like to add. Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
+            Printer.println("Please enter an item in you order you would like to add order #" + orderNum + ". Type \"menu\" or \"m\" anytime to view the menu. When finished, type \"finished\"");
             String food = sc.nextLine().toLowerCase().trim();
             checkQuit(food);
             if (keyContains(food, new String[]{"menu", "m"})) {
