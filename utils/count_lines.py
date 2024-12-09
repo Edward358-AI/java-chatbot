@@ -10,7 +10,7 @@ def count_lines_in_file(file_path: str) -> int:
         print(f"Error reading file {file_path}: {e}")
         return 0
 
-def count_lines_in_java_files(root_dir: str) -> tuple[int, list[tuple[str, int]:
+def count_lines_in_java_files(root_dir: str) -> tuple[int, list[tuple[str, int]]]:
     total_lines = 0
     java_files = []
 
